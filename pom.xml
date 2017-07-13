@@ -13,7 +13,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <log4j.version>1.2.17</log4j.version>
-    <maven.version>3.5</maven.version>
+    <org_test.version>6.8</org_test.version>
+    <maven_compiler_plugin.version>3.5</maven_compiler_plugin.version>
   </properties>
 
   <distributionManagement>
@@ -30,7 +31,7 @@
 	<dependency>
 	  <groupId>org.testng</groupId>
 	  <artifactId>testng</artifactId>
-	  <version>6.8</version>
+	  <version>${org_test.version}</version>
 	  <scope>test</scope>
 	</dependency>
 	
@@ -46,7 +47,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.version}</version>
+        <version>${maven_compiler_plugin.version}</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
