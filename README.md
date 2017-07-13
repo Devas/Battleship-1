@@ -11,7 +11,7 @@
 
 
 # TO DO list
-
+[x] play aroud with git 
 	
 
 # For review & questions & doubts
