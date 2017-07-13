@@ -12,6 +12,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
+    <log4j.version>1.2.17</log4j.version>
   </properties>
 
   <distributionManagement>
@@ -31,6 +32,12 @@
 	  <version>6.8</version>
 	  <scope>test</scope>
 	</dependency>
+	
+	<dependency>
+  		<groupId>log4j</groupId>
+  		<artifactId>log4j</artifactId>
+  		<version>${log4j.version}</version>
+  	</dependency> 
   </dependencies>
 
   <build>
