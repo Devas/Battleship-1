@@ -8,38 +8,59 @@
 
   <name>Battleship</name>
   <url>http://maven.apache.org</url>
+  
+  <prerequisites><maven>3.0.1</maven></prerequisites>
 
   <properties>
+    <!-- JAVA & ENCODING-->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
-    <log4j.version>1.2.17</log4j.version>
-    <org_test.version>6.8</org_test.version>
-    <maven_compiler_plugin.version>3.5</maven_compiler_plugin.version>
-  </properties>
 
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>repo1</id>
-      <name>Corporate Repository</name>
-      <url>file:///home/artur/workspace/deploy</url>
-      <layout>default</layout>
-    </repository>
-  </distributionManagement>
+    <!-- DEPENDENCIES -->
+    <testng.version>6.11</testng.version>
+    <mockito.version>1.8.4</mockito.version>
+
+    <logback.version>1.2.3</logback.version>
+    <slf4j.version>1.7.25</slf4j.version>
+
+    <!-- PLUGINS -->
+    <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+    <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+    <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
+    <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+    <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+    <maven-site-plugin.version>3.6</maven-site-plugin.version>
+    <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+  </properties>
 
   <dependencies>
 	<dependency>
 	  <groupId>org.testng</groupId>
 	  <artifactId>testng</artifactId>
-	  <version>${org_test.version}</version>
+	  <version>${testng.version}</version>
 	  <scope>test</scope>
 	</dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+      <scope>test</scope>
+    </dependency>
 	
 	<dependency>
-  		<groupId>log4j</groupId>
-  		<artifactId>log4j</artifactId>
-  		<version>${log4j.version}</version>
-  	</dependency> 
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -47,12 +68,63 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven_compiler_plugin.version}</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>auto-clean</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven-deploy-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven-install-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven-site-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+      
     </plugins>
   </build>
 
