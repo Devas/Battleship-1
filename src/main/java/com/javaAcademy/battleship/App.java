@@ -1,4 +1,4 @@
-package com.javaAcademy.Battleship;
+package com.javaAcademy.battleship;
 
 public class App 
 {
