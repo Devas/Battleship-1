@@ -1,7 +1,7 @@
-package com.javaAcademy.Battleship.net;
+package com.java_academy.battleship.net;
 
-import com.javaAcademy.Battleship.net.socket_providers.BSServerSocketProvider;
-import com.javaAcademy.Battleship.net.socket_providers.core.SocketProvider;
+import com.java_academy.battleship.net.socket_providers.BSServerSocketProvider;
+import com.java_academy.battleship.net.socket_providers.core.SocketProvider;
 import org.testng.annotations.Test;
 
 import java.net.ServerSocket;

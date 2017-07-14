@@ -1,4 +1,4 @@
-package com.javaAcademy.Battleship.net.socket_providers.core;
+package com.java_academy.battleship.net.socket_providers.core;
 
 import java.io.Closeable;
 import java.io.IOException;

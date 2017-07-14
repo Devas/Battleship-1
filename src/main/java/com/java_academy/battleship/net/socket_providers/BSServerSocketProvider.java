@@ -1,6 +1,6 @@
-package com.javaAcademy.Battleship.net.socket_providers;
+package com.java_academy.battleship.net.socket_providers;
 
-import com.javaAcademy.Battleship.net.socket_providers.core.SocketProvider;
+import com.java_academy.battleship.net.socket_providers.core.SocketProvider;
 
 import java.io.IOException;
 import java.net.InetAddress;

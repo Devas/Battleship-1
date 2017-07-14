@@ -1,4 +1,4 @@
-package com.javaAcademy.Battleship.net.socket_providers;
+package com.java_academy.battleship.net.socket_providers;
 
 import org.testng.annotations.Test;
 
