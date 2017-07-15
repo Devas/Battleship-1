@@ -1,9 +1,11 @@
 package com.java_academy.battleship.net;
 
-import com.java_academy.battleship.net.socket_providers.BSServerSocketProvider;
-import com.java_academy.battleship.net.socket_providers.core.SocketProvider;
+import com.java_academy.battleship.net.socket_processor.ServerSocketProcessor;
+import com.java_academy.battleship.net.socket_provider.ServerSocketProvider;
+import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 import org.testng.annotations.Test;
 
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
 import static org.testng.AssertJUnit.assertNotNull;
@@ -19,13 +21,17 @@ public class ServerConnectionProviderTest {
     private ConnectionProvider<ServerSocket> connectionProvider;
 
     public void createProviderTest(){
-        connectionProvider = new ConnectionProvider<>(BSServerSocketProvider::new);
+        connectionProvider = new ConnectionProvider<>(ServerSocketProvider::new);
         assertNotNull(connectionProvider);
     }
 
     public void getServerSocketProviderTest(){
-        SocketProvider<ServerSocket> serverSocketProvider = connectionProvider.getSocketProvider();
+        SocketProvider<ServerSocket> serverSocketProvider = new ServerSocketProvider();
         assertNotNull(serverSocketProvider);
     }
 
+    //TODO create mock for test
+    public void openConnectionTest(){
+       // connectionProvider.openConnection(ServerSocketProcessor::new, new InetSocketAddress("localhost", 3000));
+    }
 }
