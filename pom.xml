@@ -17,11 +17,11 @@
     <java.version>1.8</java.version>
 
     <!-- DEPENDENCIES -->
-    <org-test.version>6.11</org-test.version>
-    <mockito.version>2.0.2-beta</mockito.version>
+    <testng.version>6.11</testng.version>
+    <mockito.version>1.8.4</mockito.version>
 
     <logback.version>1.2.3</logback.version>
-    <slf4j.version>1.8.0-alpha2</slf4j.version>
+    <slf4j.version>1.7.25</slf4j.version>
 
     <!-- PLUGINS -->
     <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
@@ -38,7 +38,7 @@
 	<dependency>
 	  <groupId>org.testng</groupId>
 	  <artifactId>testng</artifactId>
-	  <version>${org-test.version}</version>
+	  <version>${testng.version}</version>
 	  <scope>test</scope>
 	</dependency>
 
@@ -58,7 +58,7 @@
 	
 	<dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
   </dependencies>
