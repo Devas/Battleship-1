@@ -15,6 +15,7 @@ public class Ships {
 	}
 	
 	boolean isNukeAvailable() {
+		//TODO second condition => 4 mast ship alive
 		return !ships.isEmpty();
 	}
 }
