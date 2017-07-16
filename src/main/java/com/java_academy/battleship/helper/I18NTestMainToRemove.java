@@ -3,7 +3,7 @@ package com.java_academy.battleship.helper;
 import java.util.Locale;
 import java.util.Scanner;
 
-
+/** Just for test with UI, after tests to remove*/
 public class I18NTestMainToRemove {
 	
 	static Scanner s = new Scanner(System.in);
