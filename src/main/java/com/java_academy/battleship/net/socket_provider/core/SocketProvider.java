@@ -17,5 +17,5 @@ public interface SocketProvider<T extends Closeable> {
     T getSocket();
     void close() throws IOException;
     Socket openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException;
-    void processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress);
+    boolean processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress);
 }

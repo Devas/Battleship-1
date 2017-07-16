@@ -7,7 +7,10 @@ import org.testng.annotations.Test;
 
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.util.function.Supplier;
 
+import static org.mockito.Mockito.mock;
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 /**
@@ -21,7 +24,13 @@ public class ServerConnectionProviderTest {
     private ConnectionProvider<ServerSocket> connectionProvider;
 
     public void createProviderTest(){
-        connectionProvider = new ConnectionProvider<>(ServerSocketProvider::new);
+        Supplier<SocketProvider<ServerSocket>> supplier = () -> new ServerSocketProvider(){
+            @Override
+            public ServerSocket getSocket() {
+                return mock(ServerSocket.class);
+            }
+        };
+        connectionProvider = new ConnectionProvider<>(supplier);
         assertNotNull(connectionProvider);
     }
 
@@ -30,8 +39,7 @@ public class ServerConnectionProviderTest {
         assertNotNull(serverSocketProvider);
     }
 
-    //TODO create mock for test
     public void openConnectionTest(){
-       // connectionProvider.openConnection(ServerSocketProcessor::new, new InetSocketAddress("localhost", 3000));
+       assertEquals(true, connectionProvider.openConnection(ServerSocketProcessor::new, new InetSocketAddress("localhost", 3000)));
     }
 }

@@ -23,7 +23,8 @@ public class ConnectionProvider<T extends Closeable> {
         this.socketProvider = socketProvider.get();
     }
 
-    public void openConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress){
-      socketProvider.processConnection(supplier, inetSocketAddress);
+    public boolean openConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
+        return socketProvider.processConnection(supplier, inetSocketAddress);
     }
+
 }

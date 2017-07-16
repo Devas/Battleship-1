@@ -3,7 +3,6 @@ package com.java_academy.battleship.net.socket_provider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;

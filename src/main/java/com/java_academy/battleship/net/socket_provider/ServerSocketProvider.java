@@ -34,20 +34,20 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
 
     @Override
     public void close() throws IOException {
-        serverSocket.close();
+        getSocket().close();
     }
 
     @Override
     public Socket openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException {
-        if (!serverSocket.isBound()) {
+        if (!getSocket().isBound()) {
             int BACKLOG = 2;
-            serverSocket.bind(inetSocketAddress, BACKLOG);
+            getSocket().bind(inetSocketAddress, BACKLOG);
         }
-        return serverSocket.accept();
+        return getSocket().accept();
     }
 
     @Override
-    public void processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
+    public boolean processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
         int numberOfConnections = 0;
         int MAX_NUMBER_OF_CONNECTIONS = 2;
         while (numberOfConnections < MAX_NUMBER_OF_CONNECTIONS) {
@@ -55,15 +55,15 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
                 System.out.println("Whaiting for a client...");
                 Socket socket = openSocketConnection(inetSocketAddress);
                 System.out.println("Client connected");
-                numberOfConnections++;
                 SocketProcessor processor = supplier.get();
                 processor.setSocket(socket);
+                processor.setListener(() -> System.out.println("Connection is under process!"));
                 new Thread(processor).start();
+                numberOfConnections++;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        //TODO implement callback that connections was created
+        return true;
     }
-
 }

@@ -7,5 +7,6 @@ import java.net.Socket;
  * <p>
  */
 public interface SocketProcessor extends Runnable{
-    void setSocket(Socket socket);
+    void setSocket(final Socket socket);
+    void setListener(final SocketProcessorListener processorListener);
 }

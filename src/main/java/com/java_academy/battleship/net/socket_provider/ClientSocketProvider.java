@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 /**
  * Created by Siarhei Shauchenka on 15.07.2017.
  * <p>
+ * Implementation of {@link SocketProvider} for ClientApplication
  */
 public class ClientSocketProvider implements SocketProvider<Socket> {
 
@@ -27,28 +28,29 @@ public class ClientSocketProvider implements SocketProvider<Socket> {
 
     @Override
     public void close() throws IOException {
-        socket.close();
+        getSocket().close();
     }
 
     @Override
     public Socket openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException {
-        if (!socket.isConnected()) {
-            socket.connect(inetSocketAddress);
+        if (!getSocket().isConnected()) {
+            getSocket().connect(inetSocketAddress);
         }
-        return socket;
+        return getSocket();
     }
 
     @Override
-    public void processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
+    public boolean processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
         try {
             Socket socket = openSocketConnection(inetSocketAddress);
             SocketProcessor processor = supplier.get();
             processor.setSocket(socket);
+            processor.setListener(() -> System.out.println("Connection is under process!"));
             new Thread(processor).start();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
-
-
 }

@@ -11,13 +11,12 @@ import java.net.ServerSocket;
 /**
  * Created by Siarhei Shauchenka on 14.07.17.
  * <p>
- * Enter point for Server part
+ * Enter point for the Server part
  */
-public class ServerApplication
-{
-    public static void main( String[] args )
-    {
+public class ServerApplication {
+    public static void main(String[] args) {
         ConnectionProvider<ServerSocket> connectionProvider = new ConnectionProvider<>(ServerSocketProvider::new);
         connectionProvider.openConnection(ServerSocketProcessor::new, new InetSocketAddress("localhost", 3000));
+
     }
 }

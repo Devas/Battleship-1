@@ -2,6 +2,9 @@ package com.java_academy.battleship.net.socket_provider;
 
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 /**
@@ -12,8 +15,19 @@ import static org.testng.AssertJUnit.assertNotNull;
 @Test
 public class ClientSocketProviderTest {
 
-    public void clientSocketProviderCreationTest(){
+    public void creationTest() {
         ClientSocketProvider clientSocketProvider = new ClientSocketProvider();
         assertNotNull(clientSocketProvider);
     }
+
+    public void closingTest() {
+        ClientSocketProvider clientSocketProvider = new ClientSocketProvider();
+        try {
+            clientSocketProvider.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertEquals(clientSocketProvider.getSocket().isClosed(), true);
+    }
+
 }
