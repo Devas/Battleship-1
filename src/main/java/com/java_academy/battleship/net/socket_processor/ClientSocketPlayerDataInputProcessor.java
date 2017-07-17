@@ -3,10 +3,7 @@ package com.java_academy.battleship.net.socket_processor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -18,6 +15,8 @@ public class ClientSocketPlayerDataInputProcessor implements SocketProcessor {
 
     private Socket socket;
     private SocketProcessorListener processorListener;
+    private PipedInputStream pipeInputStream;
+
 
     @Override
     public void setSocket(final Socket socket) {
@@ -30,9 +29,18 @@ public class ClientSocketPlayerDataInputProcessor implements SocketProcessor {
     }
 
     @Override
+    public void setOutputPipe(final PipedOutputStream outputPipe) {
+        try {
+            pipeInputStream = new PipedInputStream(outputPipe);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void run() {
         try (DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            BufferedReader inputStream = new BufferedReader(new InputStreamReader(System.in))) {
+            BufferedReader inputStream = new BufferedReader(new InputStreamReader(pipeInputStream))) {
             if (processorListener != null){
                 processorListener.inProcess();
             }
@@ -48,7 +56,12 @@ public class ClientSocketPlayerDataInputProcessor implements SocketProcessor {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "";
+            if (e.getLocalizedMessage() != null){
+                message = e.getLocalizedMessage();
+            }
+            processorListener.processFailed("ClientSocketPlayerDataInputProcessor stopped! " +message);
+
         }
     }
 }

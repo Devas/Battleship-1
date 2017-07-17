@@ -1,12 +1,14 @@
 package com.java_academy.battleship.net.socket_provider;
 
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
+import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.function.Supplier;
 
 /**
@@ -52,18 +54,37 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
         int MAX_NUMBER_OF_CONNECTIONS = 2;
         while (numberOfConnections < MAX_NUMBER_OF_CONNECTIONS) {
             try {
-                System.out.println("Whaiting for a client...");
+                System.out.println("Waiting for a client...");
                 Socket socket = openSocketConnection(inetSocketAddress);
                 System.out.println("Client connected");
                 SocketProcessor processor = supplier.get();
                 processor.setSocket(socket);
-                processor.setListener(() -> System.out.println("Connection is under process!"));
+                processor.setListener(new SocketProcessorListener() {
+                    @Override
+                    public void inProcess() {
+                        System.out.println("Connection is under process!");
+                    }
+
+                    @Override
+                    public void processFailed(String message) {
+                        System.out.println("Process failed in case of: " + message);
+                    }
+                });
                 new Thread(processor).start();
                 numberOfConnections++;
+            }catch (SocketException socketException){
+                System.out.println("Connection failed! " + socketException.getLocalizedMessage());
+                //TODO implements here java.net.SocketException: Unresolved address when address is not correct
+                return false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return true;
+    }
+
+    @Override
+    public void sendMessage(String message) {
+
     }
 }

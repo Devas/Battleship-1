@@ -5,6 +5,8 @@ import com.java_academy.battleship.net.socket_processor.ClientSocketPlayerDataIn
 import com.java_academy.battleship.net.socket_processor.ClientSocketServerDataInputProcessor;
 import com.java_academy.battleship.net.socket_provider.ClientSocketProvider;
 
+import java.io.IOException;
+import java.io.PipedOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -15,10 +17,17 @@ import java.net.Socket;
 public class ClientApp  {
 
     public static void main(String[] args) {
+
         ConnectionProvider<Socket> connectionProvider = new ConnectionProvider<>(ClientSocketProvider::new);
         //Open connection for PlayerInput
         connectionProvider.openConnection(ClientSocketPlayerDataInputProcessor::new, new InetSocketAddress("localhost", 3000));
         //Open connection for ServerInput
         connectionProvider.openConnection(ClientSocketServerDataInputProcessor::new, new InetSocketAddress("localhost", 3000));
+
+
+        for (int i = 0; i < 3; i++) {
+            connectionProvider.sendMessage("bla");
+        }
+
     }
 }

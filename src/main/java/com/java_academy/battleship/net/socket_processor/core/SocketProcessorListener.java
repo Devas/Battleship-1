@@ -7,4 +7,5 @@ package com.java_academy.battleship.net.socket_processor.core;
 public interface SocketProcessorListener  {
 
     void inProcess();
+    void processFailed(String message);
 }

@@ -23,6 +23,10 @@ public class ConnectionProvider<T extends Closeable> {
         this.socketProvider = socketProvider.get();
     }
 
+    public void sendMessage(String message){
+        socketProvider.sendMessage(message);
+    }
+
     public boolean openConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
         return socketProvider.processConnection(supplier, inetSocketAddress);
     }

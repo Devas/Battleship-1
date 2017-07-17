@@ -6,6 +6,7 @@ import com.java_academy.battleship.net.socket_processor.core.SocketProcessorList
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PipedOutputStream;
 import java.net.Socket;
 
 /**
@@ -39,7 +40,11 @@ public class ServerSocketProcessor implements SocketProcessor{
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "";
+            if (e.getLocalizedMessage() != null){
+                message = e.getLocalizedMessage();
+            }
+            processorListener.processFailed(message);
         }
     }
 
@@ -51,5 +56,10 @@ public class ServerSocketProcessor implements SocketProcessor{
     @Override
     public void setListener(final SocketProcessorListener processorListener) {
         this.processorListener = processorListener;
+    }
+
+    @Override
+    public void setOutputPipe(PipedOutputStream outputPipe) {
+
     }
 }

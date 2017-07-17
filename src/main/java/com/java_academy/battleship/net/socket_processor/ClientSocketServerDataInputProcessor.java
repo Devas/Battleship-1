@@ -5,6 +5,7 @@ import com.java_academy.battleship.net.socket_processor.core.SocketProcessorList
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PipedOutputStream;
 import java.net.Socket;
 
 /**
@@ -28,6 +29,11 @@ public class ClientSocketServerDataInputProcessor implements SocketProcessor {
     }
 
     @Override
+    public void setOutputPipe(PipedOutputStream outputPipe) {
+
+    }
+
+    @Override
     public void run() {
         try (DataInputStream dataInputStream = new DataInputStream(socket.getInputStream())) {
             if (processorListener != null){
@@ -43,7 +49,11 @@ public class ClientSocketServerDataInputProcessor implements SocketProcessor {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "";
+            if (e.getLocalizedMessage() != null){
+                message = e.getLocalizedMessage();
+            }
+            processorListener.processFailed("ClientSocketServerDataInputProcessor stopped! " +message);
         }
     }
 }

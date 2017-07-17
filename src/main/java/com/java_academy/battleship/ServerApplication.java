@@ -16,7 +16,9 @@ import java.net.ServerSocket;
 public class ServerApplication {
     public static void main(String[] args) {
         ConnectionProvider<ServerSocket> connectionProvider = new ConnectionProvider<>(ServerSocketProvider::new);
-        connectionProvider.openConnection(ServerSocketProcessor::new, new InetSocketAddress("localhost", 3000));
+       if (connectionProvider.openConnection(ServerSocketProcessor::new, new InetSocketAddress("localhost", 3000))){
+           System.out.println("Connection successful!");
+       }
 
     }
 }
