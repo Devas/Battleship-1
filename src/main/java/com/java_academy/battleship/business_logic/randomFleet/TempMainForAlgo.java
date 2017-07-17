@@ -9,6 +9,7 @@ import com.java_academy.battleship.model.Ship;
 import com.java_academy.battleship.model.Ships;
 
 public class TempMainForAlgo {
+	
  
 	public static void main(String[] args) {
 		Board board = new Board();
@@ -18,6 +19,7 @@ public class TempMainForAlgo {
 		FleetSetter fleetSetter = new FleetSetter(10, board);
 		Randomizer rand = new Randomizer(ships, fleetSetter);
 		rand.setFleet();
+		
 	}
 }
 

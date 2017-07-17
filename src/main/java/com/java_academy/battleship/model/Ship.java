@@ -1,33 +1,44 @@
 package com.java_academy.battleship.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
 	
-	private int hp;
+	private int mastAmount;
 	//TODO change for cell
 	//private List<Cell> cells;
 	private List<Integer> indexes;
-	
-	public Ship(int hp) {
-		this.hp = hp;
-		indexes = new ArrayList<Integer>();
+	private List<ShipCellState> cellStates;
+
+	public Ship(int mastAmount) {
+		this.mastAmount = mastAmount;
 	}
 
 	boolean isAlive() {
-		if(hp > 0) {
+		if(mastAmount > 0) {
 			return true;
 		}
 		return false;
 	}
 
-	public int getHp() {
-		return hp;
+	public int getMastAmount() {
+		return mastAmount;
 	}
 	
-	public void addIndex(Integer index) {
-		indexes.add(index);
+	public List<ShipCellState> getCellStates() {
+		return cellStates;
+	}
+
+	public void setCellStates(List<ShipCellState> cellStates) {
+		this.cellStates = cellStates;
+	}
+
+	public List<Integer> getIndexes() {
+		return indexes;
+	}
+	
+	public void setIndexes(List<Integer> indexes) {
+		this.indexes = indexes;
 	}
 
 }

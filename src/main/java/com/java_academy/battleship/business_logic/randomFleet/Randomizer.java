@@ -2,6 +2,8 @@ package com.java_academy.battleship.business_logic.randomFleet;
 
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.java_academy.battleship.business_logic.FleetSetter;
 import com.java_academy.battleship.model.Ship;
 import com.java_academy.battleship.model.Ships;
@@ -12,6 +14,7 @@ import com.java_academy.battleship.model.Ships;
  * */
 public class Randomizer {
 
+	Logger logger = Logger.getLogger("stdout");
 	Ships ships;
 	Random rand = new Random();
 	FleetSetter fleetSetter;
@@ -19,6 +22,7 @@ public class Randomizer {
 	public Randomizer(Ships ships, FleetSetter fleetSetter) {
 		this.ships = ships;
 		this.fleetSetter = fleetSetter;
+		logger.info("Player XX used randomizer.");
 	}
 	
 	void setFleet() {

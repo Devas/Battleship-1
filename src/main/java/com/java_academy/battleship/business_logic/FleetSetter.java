@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.java_academy.battleship.model.Board;
 import com.java_academy.battleship.model.CellState;
 import com.java_academy.battleship.model.Ship;
 
 public class FleetSetter {
 	
+	Logger logger = Logger.getLogger("stdout");
 	Board board;
 	Map<Integer, CellState>  boardMap;
 	int boardXDim;
@@ -25,7 +28,7 @@ public class FleetSetter {
 		int cnt = 0;
 		int lastIndex = startPoint;
 		int nextIndex = startPoint;
-		for(int i = 0 ; i < ship.getHp() ; i++) {
+		for(int i = 0 ; i < ship.getMastAmount() ; i++) {
 			if(pointIsAvailable(nextIndex, lastIndex)) {
 				cnt++;
 				if(i > 0) {
@@ -35,7 +38,7 @@ public class FleetSetter {
 				nextIndex = getNextIndex(nextIndex, isVertical);
 			}	
 		}
-		if(cnt == ship.getHp()) {
+		if(cnt == ship.getMastAmount()) {
 			setShipOnTheBoard(shipIndexes);
 			return true;
 		}
@@ -43,7 +46,7 @@ public class FleetSetter {
 	}
 	
 	void setShipOnTheBoard(List<Integer> shipIndexes) {
-		System.out.println("Create a ship: " + shipIndexes);
+		logger.info("Randomizer create a ship: " + shipIndexes);
 		setShip(shipIndexes);
 		markNeighbours(shipIndexes);
 		board.showBoard();
