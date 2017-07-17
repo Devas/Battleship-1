@@ -158,13 +158,13 @@
                   <Insets left="2.0" right="2.0" />
                </padding>
             </Separator>
-            <GridPane fx:id="GridPane2" gridLinesVisible="true">
+            <GridPane fx:id="gridPane" gridLinesVisible="true">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="200.0" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+                  <Pane fx:id="100" onMouseClicked="#method" prefHeight="200.0" prefWidth="200.0" />
+                  <Pane fx:id="101" onMouseClicked="#method" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <Pane fx:id="102" onMouseClicked="#method" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                  <Pane fx:id="103" onMouseClicked="#method" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+                  <Pane fx:id="104" onMouseClicked="#method" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
                   <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" />
                   <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" />
                   <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" />
