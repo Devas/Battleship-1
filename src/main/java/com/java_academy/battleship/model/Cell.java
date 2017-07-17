@@ -4,7 +4,7 @@ public class Cell {
 
 	private int index;
 	private ShipCellState shipCellState;
-	
+	private CellState cellState;
 	
 	
 }

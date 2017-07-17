@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.java_academy.battleship.business_logic.checkers.NeighbourChecker;
 import com.java_academy.battleship.model.Board;
 import com.java_academy.battleship.model.CellState;
 import com.java_academy.battleship.model.Ship;
@@ -16,11 +17,13 @@ public class FleetSetter {
 	Board board;
 	Map<Integer, CellState>  boardMap;
 	int boardXDim;
+	NeighbourChecker neighbourChecker;
 	
 	public FleetSetter(int boardXDim, Board board) {
 		this.board = board;
 		this.boardXDim = boardXDim;
-		boardMap = board.getEmptyBoard();
+		boardMap = board.getBoardMap();
+		neighbourChecker = new NeighbourChecker(boardXDim, board);
 	}
 
 	public boolean setIfPossible(int startPoint, Ship ship, Boolean isVertical) {
@@ -60,7 +63,7 @@ public class FleetSetter {
 	
 	void markNeighbours(List<Integer> shipIndexes) {
 		for(Integer index: shipIndexes) {
-			for(Integer neighbour: getNeighbours(index)) {
+			for(Integer neighbour: neighbourChecker.getNeighbours(index)) {
 				if(!boardMap.get(neighbour).equals(CellState.TAKEN)) {
 					boardMap.put(neighbour, CellState.BUSY);
 				}
@@ -75,7 +78,7 @@ public class FleetSetter {
 	}
 
 	boolean busyNeighbours(Integer startPoint) {
-		List<Integer> neighbours = getNeighbours(startPoint);
+		List<Integer> neighbours = neighbourChecker.getNeighbours(startPoint);
 		boolean flag = false;
 		
 		for(Integer neighbour: neighbours) {
@@ -87,23 +90,6 @@ public class FleetSetter {
 		return flag;
 	}
 	
-	private List<Integer> getNeighbours(Integer startPoint) {
-		List<Integer> neighbours = new ArrayList<Integer>();
-		for(Integer index: getNeighboursToCheckForPoint(startPoint)) {
-			if(isNeighbour(startPoint, index) && boardMap.containsKey(index)) {
-				neighbours.add(index);
-			}
-		}
-		return neighbours;
-	}
-	
-	Integer[] getNeighboursToCheckForPoint(Integer point) {
-		Integer[] neighboursToCheck = {point - (boardXDim+1), point - boardXDim, point - (boardXDim-1), 
-				   point - 1, point + 1,
-				   point + (boardXDim-1), point + boardXDim, point + boardXDim + 1};
-		return neighboursToCheck;
-	}
-	
 	private boolean pointIsOnTheBoard(Integer point) {
 		return boardMap.containsKey(point);
 	}
@@ -113,21 +99,7 @@ public class FleetSetter {
 	}
 	
 	private boolean earlierPointIsNeighbor(Integer point, Integer ancestor){
-		return isNeighbour(point, ancestor);
-	}
-
-	boolean isNeighbour(Integer startPoint, Integer index) {
-		if(startPoint % boardXDim == boardXDim - 1) {
-			if(index - startPoint == 1 || startPoint - index == boardXDim-1 || index - startPoint == boardXDim+1) {
-				return false;
-			}
-		}
-		if(startPoint % boardXDim == 0) {
-			if(startPoint - index == 1 || index - startPoint == boardXDim-1 || startPoint - index == boardXDim+1) {
-				return false;
-			}
-		}
-		return true;
+		return neighbourChecker.isNeighbour(point, ancestor);
 	}
 
 	int getNextIndex(int index, boolean isVertical) {

@@ -34,30 +34,6 @@ public class FleetSetterTest {
 	}
 	
 	@Test
-	public void isNeighbourIfBreakLine() {
-		assertFalse(fleetSetter.isNeighbour(9, 10));
-		assertFalse(fleetSetter.isNeighbour(10, 9));
-	}
-	
-	@Test
-	public void isNeighbourTest() {
-		assertTrue(fleetSetter.isNeighbour(23, 12));
-		assertTrue(fleetSetter.isNeighbour(23, 13));
-		assertTrue(fleetSetter.isNeighbour(23, 14));
-		assertTrue(fleetSetter.isNeighbour(23, 22));
-		assertTrue(fleetSetter.isNeighbour(23, 24));
-		assertTrue(fleetSetter.isNeighbour(23, 32));
-		assertTrue(fleetSetter.isNeighbour(23, 33));
-		assertTrue(fleetSetter.isNeighbour(23, 34));
-	}
-	
-	@Test
-	public void pointHaveEightNeighbours() {
-		assertEquals(fleetSetter.getNeighboursToCheckForPoint(15).length, 8);
-		assertEquals(fleetSetter.getNeighboursToCheckForPoint(4).length, 8);
-	}
-	
-	@Test
 	public void busyNeighbours() {
 		Board board = new Board();
 		board.createEmptyBoard();

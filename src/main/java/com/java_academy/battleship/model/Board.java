@@ -8,7 +8,7 @@ public class Board {
 
 	private Map<Integer, CellState>  board;
 	
-	public Map<Integer, CellState> getEmptyBoard() {
+	public Map<Integer, CellState> getBoardMap() {
 		return board;
 	}
 	
