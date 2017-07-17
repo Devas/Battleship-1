@@ -19,7 +19,6 @@ public class TempMainForAlgo {
 		FleetSetter fleetSetter = new FleetSetter(10, board);
 		Randomizer rand = new Randomizer(ships, fleetSetter);
 		rand.setFleet();
-		
 	}
 }
 
