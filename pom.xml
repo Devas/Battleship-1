@@ -6,7 +6,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Battleship</name>
+  <name>BATTLESHIP</name>
   <url>http://maven.apache.org</url>
   
   <prerequisites><maven>3.0.1</maven></prerequisites>
