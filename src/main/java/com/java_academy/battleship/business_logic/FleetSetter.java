@@ -109,4 +109,8 @@ public class FleetSetter {
 			return index + 1;
 		}
 	}
+	
+	public Map<Integer, CellState> getBoardMap() {
+		return boardMap;
+	}
 }

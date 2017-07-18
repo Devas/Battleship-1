@@ -15,11 +15,13 @@ import java.util.List;
 public class Controller {
 
     private final List<Integer> shipPositions = new ArrayList<>();
+    
+    Model model = new Model(new View());
 
     @FXML
     GridPane gridPane;
 
-    public void handleMouseEventDuringShot(MouseEvent e) {
+    public void handleMouseEventDuringShot1(MouseEvent e) {
         Pane pane = (Pane) e.getSource();
         int source = Integer.valueOf(e.getSource().toString().replaceAll("\\D+", ""));
         if (shipPositions.contains(source))
@@ -29,6 +31,10 @@ public class Controller {
 
         //jesli chcemy by nie mozna bylo strzelac w to miejsce dwa razy
         // pane.setDisable(true);
+    }
+    
+    public void handleMouseEventDuringShot(MouseEvent e) {
+    	model.processShot((Pane) e.getSource());
     }
 
     private List<Pane> getListOfPanes() {

@@ -25,7 +25,7 @@ public class Randomizer {
 		logger.info("Player XX used randomizer.");
 	}
 	
-	void setFleet() {
+	public void setFleet() {
 		for(Ship ship: ships.getFleet()) {
 			setShipOnBoard(ship);
 		}
