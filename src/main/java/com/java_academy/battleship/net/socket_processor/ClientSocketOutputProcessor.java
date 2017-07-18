@@ -1,5 +1,6 @@
 package com.java_academy.battleship.net.socket_processor;
 
+import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 import sun.misc.IOUtils;
@@ -14,10 +15,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * <p>
  *  Implements logic for transferring data which was entered by a Player
  */
-public class ClientSocketOutputProcessor implements SocketProcessor {
+public class ClientSocketOutputProcessor implements OutputSocketProcessor {
 
     private Socket socket;
-    private SocketProcessorListener processorListener;
     private ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
     private String message;
     private DataOutputStream dataOutputStream;
@@ -31,11 +31,6 @@ public class ClientSocketOutputProcessor implements SocketProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void setListener(final SocketProcessorListener processorListener) {
-        this.processorListener = processorListener;
     }
 
     @Override
@@ -58,8 +53,6 @@ public class ClientSocketOutputProcessor implements SocketProcessor {
     public void run() {
         try (BufferedReader inputStream = new BufferedReader(new StringReader(message))) {
             String inputData = inputStream.readLine();
-            //TODO implement logic to pass data, for now it just send data to the server
-            System.out.println("message  to server = " + inputData);
             dataOutputStream.writeUTF(inputData);
             dataOutputStream.flush();
         } catch (IOException e) {

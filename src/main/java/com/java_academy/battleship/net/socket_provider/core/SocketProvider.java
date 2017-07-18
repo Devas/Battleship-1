@@ -1,5 +1,7 @@
 package com.java_academy.battleship.net.socket_provider.core;
 
+import com.java_academy.battleship.net.socket_processor.core.InputSocketProcessor;
+import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 
 import java.io.Closeable;
@@ -17,6 +19,6 @@ public interface SocketProvider<T extends Closeable> {
     T getSocket();
     void close() throws IOException;
     void openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException;
-    void processConnection();
+    void processConnection(Supplier<OutputSocketProcessor> outputProcessorSupplier, Supplier<InputSocketProcessor> inputProcessorSupplier);
     void sendMessage(String string);
 }

@@ -3,6 +3,8 @@ package com.java_academy.battleship.net.socket_provider;
 import com.java_academy.battleship.net.socket_processor.ServerSocketInputProcessor;
 import com.java_academy.battleship.net.socket_processor.ServerSocketOutputProcessor;
 import com.java_academy.battleship.net.socket_processor.ServerToClientConnectionProcessor;
+import com.java_academy.battleship.net.socket_processor.core.InputSocketProcessor;
+import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 
@@ -12,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -25,7 +28,7 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
     private ServerSocket serverSocket;
     private Socket firstPlayerSocket;
     private Socket secondPlayerSocket;
-    private ServerSocketOutputProcessor outputProcessor;
+    private OutputSocketProcessor outputProcessor;
     private ExecutorService executorService = new ScheduledThreadPoolExecutor(3);
 
     public ServerSocketProvider() {
@@ -45,6 +48,14 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
     public void close() throws IOException {
         outputProcessor.closeSocket();
         serverSocket.close();
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(15, TimeUnit.SECONDS)){
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -56,18 +67,21 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
         executorService.execute(new ServerToClientConnectionProcessor(getSocket(), socket -> {
             firstPlayerSocket = socket;
             if (firstPlayerSocket != null && secondPlayerSocket != null){
-                processConnection();
+                processConnection(ServerSocketOutputProcessor::new, ServerSocketInputProcessor::new);
             }}));
+
         executorService.execute(new ServerToClientConnectionProcessor(getSocket(), socket -> {
             secondPlayerSocket = socket;
             if (firstPlayerSocket != null && secondPlayerSocket != null){
-                processConnection();
+                processConnection(ServerSocketOutputProcessor::new, ServerSocketInputProcessor::new);
             }}));
     }
 
+
+
     @Override
-    public void processConnection() {
-        ServerSocketInputProcessor firstPlayerInputProcessor = new ServerSocketInputProcessor();
+    public void processConnection(Supplier<OutputSocketProcessor> outputProcessorSupplier, Supplier<InputSocketProcessor> inputProcessorSupplier) {
+        InputSocketProcessor firstPlayerInputProcessor = inputProcessorSupplier.get();
         firstPlayerInputProcessor.setSocket(firstPlayerSocket);
         firstPlayerInputProcessor.setListener(message -> {
             System.out.println("message from first client = " + message);
@@ -75,7 +89,7 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
         });
         executorService.execute(firstPlayerInputProcessor);
 
-        ServerSocketInputProcessor secondPlayerInputProcessor = new ServerSocketInputProcessor();
+        InputSocketProcessor secondPlayerInputProcessor = inputProcessorSupplier.get();
         secondPlayerInputProcessor.setSocket(secondPlayerSocket);
         secondPlayerInputProcessor.setListener(message -> {
             System.out.println("message from second client = " + message);
@@ -83,7 +97,7 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
         });
         executorService.execute(secondPlayerInputProcessor);
 
-        outputProcessor = new ServerSocketOutputProcessor();
+        outputProcessor = outputProcessorSupplier.get();
         outputProcessor.setSocket(firstPlayerSocket, secondPlayerSocket);
 
     }

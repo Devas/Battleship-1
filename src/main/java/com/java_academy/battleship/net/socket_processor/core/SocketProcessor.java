@@ -8,7 +8,5 @@ import java.net.Socket;
  */
 public interface SocketProcessor extends Runnable{
     void setSocket(final Socket ... socket);
-    void setListener(final SocketProcessorListener processorListener);
-    void sendMessage(String message);
     void closeSocket();
 }

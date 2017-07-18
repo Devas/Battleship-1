@@ -1,5 +1,6 @@
 package com.java_academy.battleship.net.socket_processor;
 
+import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * It pass data to the Messages Observer
  */
 
-public class ServerSocketOutputProcessor implements SocketProcessor{
+public class ServerSocketOutputProcessor implements OutputSocketProcessor{
 
     private Socket firstPlayerSocket;
     private Socket secondPlayerSocket;
@@ -49,11 +50,6 @@ public class ServerSocketOutputProcessor implements SocketProcessor{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void setListener(final SocketProcessorListener processorListener) {
-
     }
 
     @Override

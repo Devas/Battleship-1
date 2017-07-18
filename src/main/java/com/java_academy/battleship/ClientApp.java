@@ -16,6 +16,13 @@ public class ClientApp  {
         ConnectionProvider<Socket> connectionProvider = new ConnectionProvider<>(ClientSocketProvider::new);
         connectionProvider.openConnection(new InetSocketAddress("localhost", 3000));
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        connectionProvider.sendMessage("dsfdsfsd");
+
 
     }
 }

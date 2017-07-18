@@ -2,6 +2,8 @@ package com.java_academy.battleship.net.socket_provider;
 
 import com.java_academy.battleship.net.socket_processor.ClientSocketOutputProcessor;
 import com.java_academy.battleship.net.socket_processor.ClientSocketInputProcessor;
+import com.java_academy.battleship.net.socket_processor.core.InputSocketProcessor;
+import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
@@ -19,7 +21,7 @@ import java.util.function.Supplier;
 public class ClientSocketProvider implements SocketProvider<Socket> {
 
     private Socket socket;
-    private SocketProcessor outputProcessor;
+    private OutputSocketProcessor outputProcessor;
 
     public ClientSocketProvider() {
         this.socket = new Socket();
@@ -40,15 +42,15 @@ public class ClientSocketProvider implements SocketProvider<Socket> {
         if (!getSocket().isConnected()) {
             getSocket().connect(inetSocketAddress);
         }
-        processConnection();
+        processConnection(ClientSocketOutputProcessor::new, ClientSocketInputProcessor::new);
     }
 
     @Override
-    public void processConnection() {
-            outputProcessor = new ClientSocketOutputProcessor();
+    public void processConnection(Supplier<OutputSocketProcessor> outputProcessorSupplier, Supplier<InputSocketProcessor> inputProcessorSupplier) {
+            outputProcessor = outputProcessorSupplier.get();
             outputProcessor.setSocket(socket);
 
-            SocketProcessor inputProcessor = new ClientSocketInputProcessor();
+            InputSocketProcessor inputProcessor = inputProcessorSupplier.get();
             inputProcessor.setSocket(socket);
             inputProcessor.setListener(message -> System.out.println("message from server = " + message));
 

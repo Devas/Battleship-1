@@ -1,5 +1,6 @@
 package com.java_academy.battleship.net.socket_processor;
 
+import com.java_academy.battleship.net.socket_processor.core.InputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 
@@ -10,7 +11,7 @@ import java.net.Socket;
 /**
  * Created by Siarhei Shauchenka on 18.07.17.
  */
-public class ServerSocketInputProcessor implements SocketProcessor {
+public class ServerSocketInputProcessor implements InputSocketProcessor {
 
     private Socket socket;
     private SocketProcessorListener processorListener;
@@ -25,10 +26,6 @@ public class ServerSocketInputProcessor implements SocketProcessor {
         this.processorListener = processorListener;
     }
 
-    @Override
-    public void sendMessage(String message) {
-
-    }
 
     @Override
     public void closeSocket() {
