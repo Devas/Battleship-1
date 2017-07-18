@@ -4,6 +4,7 @@ import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.function.Supplier;
 
@@ -23,8 +24,15 @@ public class ConnectionProvider<T extends Closeable> {
         this.socketProvider = socketProvider.get();
     }
 
-    public boolean openConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
-        return socketProvider.processConnection(supplier, inetSocketAddress);
+    public void openConnection(InetSocketAddress inetSocketAddress) {
+        try {
+            socketProvider.openSocketConnection(inetSocketAddress);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void sendMessage(String string){
+        socketProvider.sendMessage(string);
+    }
 }

@@ -8,40 +8,45 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * Created by Siarhei Shauchenka on 15.07.2017.
- * <p>
- * Implements logic for transferring data which was received from the Server
+ * Created by Siarhei Shauchenka on 18.07.17.
  */
-public class ClientSocketServerDataInputProcessor implements SocketProcessor {
+public class ServerSocketInputProcessor implements SocketProcessor {
 
     private Socket socket;
     private SocketProcessorListener processorListener;
 
     @Override
-    public void setSocket(final Socket socket) {
-        this.socket = socket;
+    public void setSocket(Socket... socket) {
+        this.socket = socket[0];
     }
 
     @Override
-    public void setListener(final SocketProcessorListener processorListener) {
+    public void setListener(SocketProcessorListener processorListener) {
         this.processorListener = processorListener;
     }
 
     @Override
+    public void sendMessage(String message) {
+
+    }
+
+    @Override
+    public void closeSocket() {
+
+    }
+
+    @Override
     public void run() {
-        try (DataInputStream dataInputStream = new DataInputStream(socket.getInputStream())) {
-            if (processorListener != null){
-                processorListener.inProcess();
-            }
+        try (DataInputStream dataInputStream = new DataInputStream(socket.getInputStream())){
             while (!Thread.currentThread().isInterrupted()) {
                 String inputData = dataInputStream.readUTF();
                 if (inputData.equals("bye")){
                     Thread.currentThread().interrupt();
                 }
-                //TODO implement logic to pass data, for now it just receive echo from the server
-                System.out.println("message from server = " + inputData);
+                if (processorListener != null){
+                    processorListener.messageReceived(inputData);
+                }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

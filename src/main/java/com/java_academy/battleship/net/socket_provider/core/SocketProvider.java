@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 public interface SocketProvider<T extends Closeable> {
     T getSocket();
     void close() throws IOException;
-    Socket openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException;
-    boolean processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress);
+    void openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException;
+    void processConnection();
+    void sendMessage(String string);
 }

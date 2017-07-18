@@ -1,12 +1,17 @@
 package com.java_academy.battleship.net.socket_provider;
 
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
+import com.java_academy.battleship.net.socket_processor.ServerSocketInputProcessor;
+import com.java_academy.battleship.net.socket_processor.ServerSocketOutputProcessor;
+import com.java_academy.battleship.net.socket_processor.ServerToClientConnectionProcessor;
+import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.function.Supplier;
 
 /**
@@ -18,6 +23,10 @@ import java.util.function.Supplier;
 public class ServerSocketProvider implements SocketProvider<ServerSocket> {
 
     private ServerSocket serverSocket;
+    private Socket firstPlayerSocket;
+    private Socket secondPlayerSocket;
+    private ServerSocketOutputProcessor outputProcessor;
+    private ExecutorService executorService = new ScheduledThreadPoolExecutor(3);
 
     public ServerSocketProvider() {
         try {
@@ -34,36 +43,53 @@ public class ServerSocketProvider implements SocketProvider<ServerSocket> {
 
     @Override
     public void close() throws IOException {
-        getSocket().close();
+        outputProcessor.closeSocket();
+        serverSocket.close();
     }
 
     @Override
-    public Socket openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException {
+    public void openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException {
         if (!getSocket().isBound()) {
             int BACKLOG = 2;
             getSocket().bind(inetSocketAddress, BACKLOG);
         }
-        return getSocket().accept();
+        executorService.execute(new ServerToClientConnectionProcessor(getSocket(), socket -> {
+            firstPlayerSocket = socket;
+            if (firstPlayerSocket != null && secondPlayerSocket != null){
+                processConnection();
+            }}));
+        executorService.execute(new ServerToClientConnectionProcessor(getSocket(), socket -> {
+            secondPlayerSocket = socket;
+            if (firstPlayerSocket != null && secondPlayerSocket != null){
+                processConnection();
+            }}));
     }
 
     @Override
-    public boolean processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
-        int numberOfConnections = 0;
-        int MAX_NUMBER_OF_CONNECTIONS = 2;
-        while (numberOfConnections < MAX_NUMBER_OF_CONNECTIONS) {
-            try {
-                System.out.println("Whaiting for a client...");
-                Socket socket = openSocketConnection(inetSocketAddress);
-                System.out.println("Client connected");
-                SocketProcessor processor = supplier.get();
-                processor.setSocket(socket);
-                processor.setListener(() -> System.out.println("Connection is under process!"));
-                new Thread(processor).start();
-                numberOfConnections++;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return true;
+    public void processConnection() {
+        ServerSocketInputProcessor firstPlayerInputProcessor = new ServerSocketInputProcessor();
+        firstPlayerInputProcessor.setSocket(firstPlayerSocket);
+        firstPlayerInputProcessor.setListener(message -> {
+            System.out.println("message from first client = " + message);
+            outputProcessor.sendMessage("echo message from first player = " + message);
+        });
+        executorService.execute(firstPlayerInputProcessor);
+
+        ServerSocketInputProcessor secondPlayerInputProcessor = new ServerSocketInputProcessor();
+        secondPlayerInputProcessor.setSocket(secondPlayerSocket);
+        secondPlayerInputProcessor.setListener(message -> {
+            System.out.println("message from second client = " + message);
+            outputProcessor.sendMessage("echo message from second player = " + message);
+        });
+        executorService.execute(secondPlayerInputProcessor);
+
+        outputProcessor = new ServerSocketOutputProcessor();
+        outputProcessor.setSocket(firstPlayerSocket, secondPlayerSocket);
+
+    }
+
+    @Override
+    public void sendMessage(String string) {
+        outputProcessor.sendMessage(string);
     }
 }

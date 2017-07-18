@@ -1,6 +1,9 @@
 package com.java_academy.battleship.net.socket_provider;
 
+import com.java_academy.battleship.net.socket_processor.ClientSocketOutputProcessor;
+import com.java_academy.battleship.net.socket_processor.ClientSocketInputProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
+import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 
 import java.io.IOException;
@@ -16,6 +19,7 @@ import java.util.function.Supplier;
 public class ClientSocketProvider implements SocketProvider<Socket> {
 
     private Socket socket;
+    private SocketProcessor outputProcessor;
 
     public ClientSocketProvider() {
         this.socket = new Socket();
@@ -28,29 +32,31 @@ public class ClientSocketProvider implements SocketProvider<Socket> {
 
     @Override
     public void close() throws IOException {
-        getSocket().close();
+        outputProcessor.closeSocket();
     }
 
     @Override
-    public Socket openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException {
+    public void openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException {
         if (!getSocket().isConnected()) {
             getSocket().connect(inetSocketAddress);
         }
-        return getSocket();
+        processConnection();
     }
 
     @Override
-    public boolean processConnection(Supplier<SocketProcessor> supplier, InetSocketAddress inetSocketAddress) {
-        try {
-            Socket socket = openSocketConnection(inetSocketAddress);
-            SocketProcessor processor = supplier.get();
-            processor.setSocket(socket);
-            processor.setListener(() -> System.out.println("Connection is under process!"));
-            new Thread(processor).start();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public void processConnection() {
+            outputProcessor = new ClientSocketOutputProcessor();
+            outputProcessor.setSocket(socket);
+
+            SocketProcessor inputProcessor = new ClientSocketInputProcessor();
+            inputProcessor.setSocket(socket);
+            inputProcessor.setListener(message -> System.out.println("message from server = " + message));
+
+            new Thread(inputProcessor).start();
+    }
+
+    @Override
+    public void sendMessage(String string) {
+        outputProcessor.sendMessage(string);
     }
 }
