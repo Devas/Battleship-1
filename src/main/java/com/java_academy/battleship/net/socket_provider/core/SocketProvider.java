@@ -2,12 +2,10 @@ package com.java_academy.battleship.net.socket_provider.core;
 
 import com.java_academy.battleship.net.socket_processor.core.InputSocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.function.Supplier;
 
 /**
@@ -16,9 +14,9 @@ import java.util.function.Supplier;
  * Base interface for a SocketProvider class
  */
 public interface SocketProvider<T extends Closeable> {
-    T getSocket();
+    boolean isClosed();
     void close() throws IOException;
-    void openSocketConnection(InetSocketAddress inetSocketAddress) throws IOException;
+    void openSocketConnection(InetSocketAddress inetSocketAddress);
     void processConnection(Supplier<OutputSocketProcessor> outputProcessorSupplier, Supplier<InputSocketProcessor> inputProcessorSupplier);
     void sendMessage(String string);
 }

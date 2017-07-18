@@ -22,19 +22,12 @@ public class ServerConnectionProviderTest {
     private ConnectionProvider<ServerSocket> connectionProvider;
 
     public void createProviderTest(){
-        Supplier<SocketProvider<ServerSocket>> supplier = () -> new ServerSocketProvider(){
-            @Override
-            public ServerSocket getSocket() {
-                return mock(ServerSocket.class);
-            }
-        };
-        connectionProvider = new ConnectionProvider<>(supplier);
-        assertNotNull(connectionProvider);
+
     }
 
     public void getServerSocketProviderTest(){
-        SocketProvider<ServerSocket> serverSocketProvider = new ServerSocketProvider();
-        assertNotNull(serverSocketProvider);
+//        SocketProvider<ServerSocket> serverSocketProvider = new ServerSocketProvider();
+//        assertNotNull(serverSocketProvider);
     }
 
     public void openConnectionTest(){

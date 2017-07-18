@@ -1,15 +1,12 @@
 package com.java_academy.battleship.net.socket_processor;
 
 import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+
+import static com.java_academy.battleship.net.ConnectionProvider.executorService;
 
 /**
  * Created by Siarhei Shauchenka on 15.07.2017.
@@ -25,7 +22,6 @@ public class ServerSocketOutputProcessor implements OutputSocketProcessor{
     private String message;
     private DataOutputStream firstPlayerOutput;
     private DataOutputStream secondPlayerOutput;
-    private ExecutorService executorService = new ScheduledThreadPoolExecutor(3);
 
     @Override
     public void run() {
@@ -61,10 +57,10 @@ public class ServerSocketOutputProcessor implements OutputSocketProcessor{
     @Override
     public void closeSocket() {
         try {
-            firstPlayerSocket.close();
-            secondPlayerSocket.close();
             firstPlayerOutput.close();
             secondPlayerOutput.close();
+            firstPlayerSocket.close();
+            secondPlayerSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

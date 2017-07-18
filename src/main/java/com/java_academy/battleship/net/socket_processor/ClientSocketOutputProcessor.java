@@ -1,14 +1,14 @@
 package com.java_academy.battleship.net.socket_processor;
 
 import com.java_academy.battleship.net.socket_processor.core.OutputSocketProcessor;
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
-import sun.misc.IOUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+
+import static com.java_academy.battleship.net.ConnectionProvider.executorService;
 
 /**
  * Created by Siarhei Shauchenka on 15.07.2017.
@@ -18,7 +18,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class ClientSocketOutputProcessor implements OutputSocketProcessor {
 
     private Socket socket;
-    private ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
     private String message;
     private DataOutputStream dataOutputStream;
 

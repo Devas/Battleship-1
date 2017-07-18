@@ -1,11 +1,13 @@
 package com.java_academy.battleship.net;
 
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_provider.core.SocketProvider;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -18,18 +20,27 @@ import java.util.function.Supplier;
 
 public class ConnectionProvider<T extends Closeable> {
 
+    public static ExecutorService executorService = new ScheduledThreadPoolExecutor(3);
+
+    public static void terminateExecutor(){
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(15, TimeUnit.SECONDS)){
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private SocketProvider<T> socketProvider;
 
-    public ConnectionProvider(Supplier<SocketProvider<T>> socketProvider) {
-        this.socketProvider = socketProvider.get();
+    public ConnectionProvider(SocketProvider<T> socketProvider) {
+        this.socketProvider = socketProvider;
     }
 
     public void openConnection(InetSocketAddress inetSocketAddress) {
-        try {
-            socketProvider.openSocketConnection(inetSocketAddress);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        socketProvider.openSocketConnection(inetSocketAddress);
     }
 
     public void sendMessage(String string){

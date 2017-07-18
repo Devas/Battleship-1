@@ -1,7 +1,6 @@
 package com.java_academy.battleship.net.socket_processor;
 
 import com.java_academy.battleship.net.socket_processor.core.InputSocketProcessor;
-import com.java_academy.battleship.net.socket_processor.core.SocketProcessor;
 import com.java_academy.battleship.net.socket_processor.core.SocketProcessorListener;
 
 import java.io.DataInputStream;
